@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "br.com.zup.edu";
+option java_outer_classname = "KeyManagerGrpc";
+option objc_class_prefix = "HLW";
+
+package br.com.zup.edu;
+
+import "google/protobuf/timestamp.proto";
+
+service KeyManagerGrpcService {
+  rpc send (KeyManagerGrpcRequest) returns (KeyManagerGrpcReply) {}
+  rpc storeKey(StoreKeyRequest) returns (StoreKeyResponse) {}
+}
+
+service KeyManagerRemovePixKey {
+  rpc removeKey(RemoveKeyRequest) returns (RemoveKeyResponse) {}
+}
+
+service KeyManagerShowPixKeyDetail {
+  rpc showDetail(GetPixKeyDetailRequest) returns (GetPixKeyDetailResponse) {}
+}
+
+service KeyManagerListPixKeys {
+  rpc getAllPixKeys(GetAllPixKeysRequest) returns (GetAllPixKeysResponse) {}
+}
+
+message GetAllPixKeysRequest {
+  string ownerId = 1;
+}
+
+message GetAllPixKeysResponse {
+  repeated ResumedPixKeyInfo pixKeys = 1;
+}
+
+message ResumedPixKeyInfo {
+  string pixId = 1;
+  string ownerId = 2;
+  string keyValue = 3;
+}
+
+message GetPixKeyDetailRequest {
+  message FilterByPixId {
+    string ownerId = 1;
+    string pixId = 2;
+  }
+
+  oneof filter {
+    FilterByPixId pixId = 1;
+    string keyValue = 2;
+  }
+}
+
+message GetPixKeyDetailResponse {
+  string pixId                           = 1;
+  KeyType keyType                        = 2;
+  string keyValue                        = 3;
+  OwnerInfo owner                        = 4;
+  AccountInfo account                    = 5;
+  google.protobuf.Timestamp createdAt    = 6;
+
+  message OwnerInfo {
+    string name = 1;
+    string cpf = 2;
+  }
+
+  message AccountInfo {
+    string institution = 1;
+    string agencyName = 2;
+    string accountNumber = 3;
+    BankAccountType accountType = 4;
+  }
+}
+
+message KeyManagerGrpcRequest {
+  string name = 1;
+}
+
+message KeyManagerGrpcReply {
+  string message = 1;
+}
+
+message StoreKeyRequest {
+  string owner_id = 1;
+  KeyType key_type = 2;
+  string value = 3;
+  BankAccountType account_type = 4;
+}
+
+enum KeyType {
+  CPF = 0; PHONE = 1; EMAIL = 2; RANDOM = 3;
+}
+
+enum BankAccountType {
+  SAVING = 0; CHECKING = 1;
+}
+
+message StoreKeyResponse {
+  string pix_id = 1;
+}
+
+message RemoveKeyRequest {
+  //int64 pix_id = 1;
+  string pix_id = 1;
+  string owner_id = 2;
+}
+
+message RemoveKeyResponse {
+  string message = 1;
+}
+
