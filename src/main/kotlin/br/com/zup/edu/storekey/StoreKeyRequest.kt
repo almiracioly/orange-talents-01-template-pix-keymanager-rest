@@ -3,11 +3,13 @@ package br.com.zup.edu.storekey
 import br.com.zup.edu.BankAccountType
 import br.com.zup.edu.KeyType
 import br.com.zup.edu.StoreKeyRequest
+import br.com.zup.edu.shared.customannotation.validpixkey.ValidPixKey
 import io.micronaut.core.annotation.Introspected
 import java.util.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
+@ValidPixKey
 @Introspected
 data class StoreKeyRequest(
     @field:NotNull val accountType: AccountTypeRequest?,
