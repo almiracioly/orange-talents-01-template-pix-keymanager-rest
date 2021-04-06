@@ -1,6 +1,7 @@
 package br.com.zup.edu.shared
 
 import br.com.zup.edu.KeyManagerGrpcServiceGrpc
+import br.com.zup.edu.KeyManagerListPixKeysGrpc
 import br.com.zup.edu.KeyManagerRemovePixKeyGrpc
 import br.com.zup.edu.KeyManagerShowPixKeyDetailGrpc
 import io.grpc.ManagedChannel
@@ -19,5 +20,8 @@ internal class KeyManagerGrpcClientFactory(@GrpcChannel("keyManager") val channe
 
     @Singleton
     fun showDetail() = KeyManagerShowPixKeyDetailGrpc.newBlockingStub(channel)
+
+    @Singleton
+    fun getAllKeys() = KeyManagerListPixKeysGrpc.newBlockingStub(channel)
 
 }
